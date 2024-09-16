@@ -1,37 +1,19 @@
-import reactImg from "./assets/react-core-concepts.png";
-import componentsImg from "./assets/components.png";
-
-const reactDescriptions = ["Fundamental", "Crucial", "Core"];
-
-function genRandomInt(max) {
-  return Math.floor(Math.random() * (max + 1));
-}
-
-function Header() {
-  const description = reactDescriptions[genRandomInt(2)];
-  return (
-    <header>
-      <img src={reactImg} alt="Stylized atom" />
-      <h1>React Essentials</h1>
-      <p>
-        {description}React concepts you will need for almost any app you are
-        going to build!
-      </p>
-    </header>
-  );
-}
-
-function CoreConcept() {
-  return (
-    <li>
-      <img src={props.image} alt={props.title} />
-      <h3>{props.title}</h3>
-      <p>{props.description}</p>
-    </li>
-  );
-}
+import { useState } from "react";
+import { CORE_CONCEPTS } from "./data.js";
+import Header from "./components/Header/Header.jsx";
+import CoreConcept from "./components/CoreConcept/CoreConcept.jsx";
+import TabButton from "./components/TabButton.jsx";
 
 function App() {
+  const [selectedTopic, setSelectedTopic] = useState("Please Click a button");
+
+  function handleSelect(selectedButton) {
+    //selectedButton => 'components','jsx','props','state'
+    setSelectedTopic(selectedButton);
+    console.log(selectedTopic);
+  }
+  console.log("APP COMPONENT EXECUTING");
+
   return (
     <div>
       <Header />
@@ -39,14 +21,24 @@ function App() {
         <section id="core-concepts">
           <h2>Core Concepts</h2>
           <ul>
-            <CoreConcept
-              title="Components"
-              description="The core UI building block."
-              image={componentsImg}
-            />
-            <CoreConcept />
-            <CoreConcept />
+            <CoreConcept {...CORE_CONCEPTS[1]} />
+            <CoreConcept {...CORE_CONCEPTS[2]} />
+            <CoreConcept {...CORE_CONCEPTS[1]} />
+            <CoreConcept {...CORE_CONCEPTS[3]} />
           </ul>
+        </section>
+        <section id="examples">
+          <h2>Examples</h2>
+          <menu>
+            <TabButton onSelect={() => handleSelect("components")}>
+              {" "}
+              Components
+            </TabButton>
+            <TabButton onSelect={() => handleSelect("jsx")}>JSX </TabButton>
+            <TabButton onSelect={() => handleSelect("props")}>Props</TabButton>
+            <TabButton onSelect={() => handleSelect("state")}>State </TabButton>
+          </menu>
+          {selectedTopic}
         </section>
       </main>
     </div>
